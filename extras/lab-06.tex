@@ -1,0 +1,82 @@
+\documentclass{tufte-handout}
+
+\usepackage{xcolor}
+
+% set image attributes:
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+% set hyperlink attributes
+\hypersetup{colorlinks}
+
+% set table attributes
+\usepackage{tabu}
+\usepackage{booktabs}
+
+% set list attributes:
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+
+% ========================================================
+
+% define the title
+\title{SOC 4650/5650: Lab-06 - Clean Water Act Data Cleaning}
+\author{Christopher Prener, Ph.D.}
+\date{Spring 2019}
+% =======================================================
+\begin{document}
+% =======================================================
+\maketitle % generates the title
+% =======================================================
+
+\section{Directions}
+Using data from the \texttt{data/lab-06/} folder available in the \texttt{lecture-07} repository, create several maps using RStudio. Your entire project folder system should be uploaded to GitHub by Monday, March 4\textsuperscript{th} at 4:15pm.
+
+\vspace{5mm}
+\section{Analysis Development}
+The goal of this section is to create a self contained project directory with all of the data, code, map documents, results, and documentation a project needs.
+
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Clone} the \texttt{lecture-06} repository if you have not already done so.
+\item Create a project folder system with all of the necessary components, and drag the lab data from \texttt{lecture-07/data/lab-06/} into your RStudio Project's \texttt{data/} subdirectory.
+\item Create a \texttt{README.md} text file (\textsf{File $\triangleright$} {\color{red}\textsf{New File}} \textsf{$\triangleright$ Text File}). Add a quick description of your project and outline the key directories and files that are included. 
+\item Create a well-formatted RMarkdown document for your data cleaning efforts.
+\item Load the \texttt{.csv} file containing the lab data.
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 1: Data Wrangling}
+\begin{enumerate}
+\item Begin by creating a pipeline that:
+\begin{enumerate}
+\item Renames variables to \texttt{snake\_case} en masse using the \texttt{clean\_names()} function,
+\item renames the variable \texttt{eventdat} to \texttt{date},
+\item and rename the variable \texttt{county\_u\_d} to \texttt{county}.
+\end{enumerate}
+\item Next create a missing variable summary using \texttt{miss\_var\_summary()}.
+\item Create a duplicate observation report. How many duplicates are there in total? How many actual unique observations are there (i.e. if you removed all of the duplicates but kept a single observation for each unique case)?\sidenote{Look at the \texttt{dupe\_count} variable that is created in your output. Remember that if you duplicate report is long, it should not be included in your notebook! Just document the results.}
+\item Check to see if there are duplicates in the \texttt{perm\_id} variable, which appears like it may uniquely identify observations. Is this the case? If it is not, how many duplicate instances are there? If there are more than twenty, remove this code chunk and its output from your notebook to keep its length short and document in your narrative what your findings were.
+\item In a pipeline, make the following two changes:
+\begin{enumerate}
+\item Create a subset of observations where \texttt{county} is equal to \texttt{St. Louis}. 
+\item Then keep only the following variables: \texttt{yr}, \texttt{wbid}, \texttt{water\_body}, and \texttt{pollutant}, and \texttt{source}. 
+\item Assign these changes to a new tibble.
+\end{enumerate}
+\item In a pipeline, edit the following variables in your St. Louis subset to create a new measure and edit an existing one:
+\begin{enumerate}
+\item Edit the \texttt{water\_body} variable for observations that have the value \texttt{Gravois Creek tributary}. Change these values to \texttt{Gravois Cr. tributary} so that they match how the word ``Creek'' is abbreviated in the other observations.
+\item Then make the a similar change for values \texttt{Twomile Creek}.
+\item Then make the a similar change for values \texttt{Watkins Creek tributary}
+\item Then create a new variable named \texttt{ecoli} that is \texttt{TRUE} if the \texttt{pollutant} is \texttt{Escherichia coli (W)} and \texttt{FALSE} otherwise.
+\item Assign these changes back into the existing tibble containing the St. Louis subset.
+\end{enumerate}
+\end{enumerate}
+
+\vspace{5mm}
+\section{Analysis Development Follow-up}
+Don't forget to knit your document when you are done! Also be sure to go back and update your \texttt{README.md} file with any changes to your project's organization or contents.
+
+
+% =======================================================
+\end{document}

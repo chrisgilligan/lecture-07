@@ -1,0 +1,184 @@
+---
+title: "Assignment Name"
+author: "Your Name"
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output: 
+  github_document: default
+  html_notebook: default 
+---
+
+## Introduction
+This notebook illustrates basic data cleaning operations using a number of core tools for data wrangling.
+
+## Dependencies
+This notebook requires a number of packages for working with data:
+
+```{r load-packages}
+# tidyverse packages
+library(dplyr)       # data wrangling
+library(readr)       # read csv files
+library(stringr)     # string tools
+
+# other packages
+library(here)        # file path management
+library(janitor)     # data wrangling
+library(naniar)      # missing data analyses
+```
+
+## Load Data
+This notebook requires data from the University of Missouri on lakes listed under the Clean Water Act.
+
+```{r load-data}
+lakes <- read_csv(here("data", "MO_HYRDO_ImpairedLakes.csv"))
+```
+
+## Manage Variable Names
+
+```{r}
+clean_names(lakes, case = "snake")
+```
+
+```{r}
+clean_names(lakes, case = "lower_camel")
+```
+
+```{r}
+clean_names(lakes, case = "upper_camel")
+```
+
+
+```{r}
+lakes %>%
+  clean_names(case = "snake") %>%
+  rename(
+    year = yr,
+    water_body_id = wbid) -> lakes_names
+
+lakes_names
+```
+
+## Missing Data
+
+```{r}
+lakes_names %>%
+  miss_var_summary()
+```
+
+## Duplicates
+
+```{r}
+lakes_names %>%
+  get_dupes()
+```
+
+```{r}
+lakes_names %>%
+  get_dupes(water_body)
+```
+
+```{r}
+lakes_names %>%
+  distinct(water_body)
+```
+
+```{r}
+lakes_names %>%
+  distinct(water_body, .keep_all = TRUE) -> lakes_unique
+
+lakes_unique
+```
+
+## Subsetting Columns
+
+```{r}
+lakes_unique %>%
+  select(-year)
+```
+
+```{r}
+lakes_unique %>%
+  select(water_body_id, water_body, pollutant) -> lakes_subset_cols
+```
+
+```{r}
+lakes_subset_cols %>%
+  select(pollutant, water_body_id, water_body) -> lakes_subset_cols
+```
+
+## Subsetting Observations
+
+```{r}
+lakes_names %>% 
+  filter(size >= 100)
+```
+
+```{r}
+lakes_names %>% 
+  filter(pollutant == "Mercury in Fish Tissue (T)")
+```
+
+## Putting Things Together
+
+```{r}
+lakes %>% 
+  clean_names(case = "snake") %>%
+  rename(
+    year = yr,
+    water_body_id = wbid
+    ) %>%
+  select(water_body_id, water_body, size, unit, pollutant) %>%
+  filter(size >= 100) -> lakes_large
+
+lakes_large
+```
+
+## Creating New Variables
+
+
+
+
+```{r}
+lakes_large %>%
+  mutate(vlarge = ifelse(size > 999, TRUE, FALSE))
+```
+
+
+
+
+
+```{r}
+lakes_large %>%
+  mutate(mercury = ifelse(pollutant == "Mercury in Fish Tissue (T)", TRUE, FALSE))
+```
+
+```{r}
+lakes_large %>%
+  mutate(mercury = ifelse(str_detect(pollutant, pattern = "Mercury"), TRUE, FALSE))
+```
+
+```{r}
+unique(lakes_large$pollutant)
+```
+
+```{r}
+lakes_large %>% 
+  mutate(pollutant_sumple = case_when(
+    pollutant == "Chlorophyll-a (W)" ~ "Chlorophyll",
+    pollutant == "Mercury in Fish Tissue (T)" ~ "Mercury",
+    pollutant == "Phosphorus, Total (W)" ~ "Phosphorus",
+    pollutant == "Nitrogen, Total (W)"  ~ "Nitrogen",
+    pollutant == "Nutrient/Eutrophication Biol. Indicators (W)"  ~ "Eutrophication"
+    ))
+```
+
+```{r}
+lakes_large %>%
+  mutate(mercury = ifelse(pollutant == "Mercury in Fish Tissue (T)", TRUE, FALSE)) %>%
+  group_by(water_body) %>%
+  summarize(
+    pollutant_count = n(),
+    mercury = any(mercury)) %>%
+  arrange(desc(pollutant_count))
+```
+
+
