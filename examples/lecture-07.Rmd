@@ -1,6 +1,6 @@
 ---
-title: "Assignment Name"
-author: "Your Name"
+title: "Lecture-07 Examples"
+author: "Christopher Prener, Ph.D."
 date: '(`r format(Sys.time(), "%B %d, %Y")`)'
 output: 
   github_document: default
@@ -26,28 +26,46 @@ library(naniar)      # missing data analyses
 ```
 
 ## Load Data
-This notebook requires data from the University of Missouri on lakes listed under the Clean Water Act.
+This notebook requires data from the University of Missouri on lakes listed under the Clean Water Act. 
 
 ```{r load-data}
-lakes <- read_csv(here("data", "MO_HYRDO_ImpairedLakes.csv"))
+lakes <- read_csv(here("data", "example-data", "MO_HYDRO_ImpairedLakes.csv"))
+```
+
+When the data are read in, they are read in as a special type object called a `tibble` - these are data frame objects that have particular, useful properties, like clean printing. `readr` will always create `tibble` objects for you. If you want to create one from an object that is not a tibble, you can use the following syntax:
+
+```r
+obj <- dplyr::as_tibble(obj)
 ```
 
 ## Manage Variable Names
+We have a couple choices when it comes to cleaning-up variable names. When you have many columns that require cleaning, the `janitor` package's `clean_names()` function is particularly useful. It will reformat your variable names all at once, using a case you optionally change:
 
-```{r}
+* `snake_case`
+* `lowerCamel`
+* `UpperCamel`
+
+The default is `"snake"`, which we'll clearly specify here:
+
+```{r clean-names-snake}
 clean_names(lakes, case = "snake")
 ```
 
-```{r}
+Notice how underscores (i.e. `_`) have been introduced in variable names. The following code chunk illustrates the `"lower_camel"` option for comparison.
+
+```{r clean-names-lower-camel}
 clean_names(lakes, case = "lower_camel")
 ```
 
-```{r}
+The underscores used in snake case are gone, and replaced by a capital letter in the second word. With `"uower_camel"`, the first character of each variable name will also be capitalized:
+
+```{r clean-names-upper-camel}
 clean_names(lakes, case = "upper_camel")
 ```
 
+Once we have done some initial cleaning, there may be other variable names we wish to change. It is useful to pipe these functions together, cleaning variable names with `clean_names()` and then using `rename()` afterwards to clean-up specific variable names. You can rename multiple variables with `rename()` all at once as well, which this example does.  
 
-```{r}
+```{r rename-pipe}
 lakes %>%
   clean_names(case = "snake") %>%
   rename(
@@ -57,31 +75,47 @@ lakes %>%
 lakes_names
 ```
 
-## Missing Data
+I like to rename each individual variable on a separate line in the code to make the changes I'm making crystal clear. Once I have names that I want to keep, I'll assign the results of my pipeline into a new object (or an existing one) so that I can refer to those new names down the road.
 
-```{r}
+## Missing Data
+Once we've got column names that are predictable and easy to work with, we want to check for missing data. This can be done with the `naniar` package's `miss_var_summary()` function, which will provide us with a tibble where each row is a variable. The count and percentage of missing observations per variable is provided in the columns:
+
+```{r miss-var}
 lakes_names %>%
   miss_var_summary()
 ```
 
-## Duplicates
+When we have missing data, we have two choices. We can either try to "recover it" (perhaps we can find another data source with the same information), or we simply ignore it and move on. Sometimes, these are superfluous columns (like `feat_url`) that are not necessary for the work we are doing.
 
-```{r}
+## Duplicates
+Before we start removing columns, however, we want to look for duplicate observations. We can do this with the `janitor` package's `get_dupes()` function:
+
+```{r dupes}
 lakes_names %>%
   get_dupes()
 ```
 
-```{r}
+Output like this indicates that there are no true duplicates that have identical information in every variable. This is a good start, but it does not mean there are not duplicated observations. For instance, we can check and see if the same body of water appears in more than one row:
+
+```{r dupes-water}
 lakes_names %>%
   get_dupes(water_body)
 ```
 
-```{r}
+It does! When we identify this, we need to revisit what we think the observational unit for these data are. We understandably may have believed that each observation was for a single body of water, and that is true (i.e. no *single* observation is for *multiple* bodies of water), but we have bodies of water listed multiple times. We can test this easily by creating a list of all of the unique bodies of water:
+
+```{r distinct-water}
 lakes_names %>%
   distinct(water_body)
 ```
 
-```{r}
+We get a tibble that has 55 rows, which is shorter than our origianl data frame with 86 observations. This tells us that there are duplicate bodies of water.
+
+In these sorts of situations, we want to explore our data further and identify what differs between these columns. In this case, we have data that are fundamentally observations of one pollutant per body of water. So a body of water with multiple pollutants will have multiple rows. This is complicated by data that differs in some ancillary variables (like `perm_id`), and some data that appear to be for multiple features (Mark Twin Lake, for example, appears to be constituted by two polygons in these data). Getting to the bottom this can be complicated and can take time.
+
+Once we are ready to get rid of duplicated data, we can use the `dplyr` `distinct()` function. The `.keep_all` argument is important, as it ensures that we get all of the other columns in addition to the one we specify:
+
+```{r distinct-keep}
 lakes_names %>%
   distinct(water_body, .keep_all = TRUE) -> lakes_unique
 
@@ -89,37 +123,87 @@ lakes_unique
 ```
 
 ## Subsetting Columns
+Once we have a data set with a predictable number of observations, we can start to get rid of columns. This practice of whittling down our data is known as "subsetting." We always use the `select()` function from `dplyr` for this. We can list one or more variables preceded by a negative sign (i.e. `-`) to remove a column from our data:
 
-```{r}
+```{r remove-var}
 lakes_unique %>%
   select(-year)
 ```
 
-```{r}
+Alternatively, we can list variables without negative signs that we want to retain:
+
+```{r kee-vars}
 lakes_unique %>%
   select(water_body_id, water_body, pollutant) -> lakes_subset_cols
+
+lakes_subset_cols
 ```
 
-```{r}
+As before, we write our data to a new object when we are happy with the changes we have made.
+
+Our data will be created in whatever order we list the columns in, so re-ordering our list to put `pollutant` first will mean that pollutant is now the first column in the data we have created.
+
+```{r reorder-vars}
 lakes_subset_cols %>%
-  select(pollutant, water_body_id, water_body) -> lakes_subset_cols
+  select(pollutant, water_body_id, water_body)
 ```
 
 ## Subsetting Observations
+We can also subset our data by observation. For instance, we can use the `filter()` function from `dplyr` to return only observations that are for lakes at or over 100 acres in size:
 
-```{r}
+```{r filter-size}
 lakes_names %>% 
   filter(size >= 100)
 ```
 
-```{r}
+Our `filter()` statement uses a **relational operator** (`>=`, i.e. "greater than or equal to"), to identify observations to keep. For each observation, it tests whether the `size` variable is greater than or equal to `100`. This creates a series of implict `TRUE` or `FALSE` results - the lake is either greater than or equal to `100` or it is not. The lakes that are implicity identified as `TRUE` are then selected and returned. 
+
+This is known as "boolean logic," and is a core principle within computer science. The relational operators that we can use in `R` are:
+
+* `>` - greater than
+* `>=` - greater than or equal to
+* `<` - less than
+* `<=` - less than or equal to
+* `==` - exactly equal to
+* `!-` - not equal to
+
+The `==` (i.e. "exactly equal to") operator is particularly useful for selecting data that are character:
+
+```{r filter-pollutant}
 lakes_names %>% 
   filter(pollutant == "Mercury in Fish Tissue (T)")
 ```
 
-## Putting Things Together
+We can combine our two filter statements into one if we wanted to select large lakes with mercury in fish tissue by using a **logical operator**:
 
-```{r}
+```{r filter-both}
+lakes_names %>% 
+  filter(size >= 100 & pollutant == "Mercury in Fish Tissue (T)")
+```
+
+We use the `&` operator to create a conditon where there are two boolean tests (one for `size` and one for `pollutant`) that **both** must be `TRUE`. We can also use `|` as well to create a situation where one test or the other must be true.
+
+## Putting Things Together
+If we wanted to get a list of all the large lakes that have mercury as a pollutant, we could combine this with our `distinct` function:
+
+```{r distinct-filter}
+lakes_names %>%
+  filter(size >= 100 & pollutant == "Mercury in Fish Tissue (T)") %>%
+  distinct(water_body)
+```
+
+We get a `tibble` with the 19 lake names that are both 100 acres or larger and have mercury as a pollutant.
+
+We can extend this logic further, by combining all of our renaming and `select()` statements into a single pipeline. Remember that we can read the pipeline like so:
+
+1. First we take the `lakes` data, **then**
+2. we clean all of the variable names to snake_case, **then**
+3. we rename two of the variables further, **then**
+4. we subset columns to clarify the characteristics we are interested in, **then**
+5. we subset observations to retain only the lakes that are 100 acres or greater in size, **and**
+6. we assign those changes to a new object called `lakes_large`.
+
+```{r full-pipe}
 lakes %>% 
   clean_names(case = "snake") %>%
   rename(
@@ -132,37 +216,89 @@ lakes %>%
 lakes_large
 ```
 
-## Creating New Variables
+## Creating and Modifying Variables
+Often we want to create new variables as well. The `mutate()` function from `dplyr` can be used to both create new variables and edit existing ones. 
 
+### Modifying Existing Variables
+For instance, we often want to convert variables to character from numeric using `as.character()`:
 
+```{r to-character}
+lakes_large %>%
+  mutate(size = as.character(size)) -> lakes_chr
 
+lakes_chr
+```
+
+The size variable is now character instead of numeric, which can be useful when writing data to shapefiles (which do not like numbers over a certain size, an issue that crops up with large areas measured in square meters or feet).
+
+We can convert our data back with `as.numeric()`:
+
+```{r to-numeric}
+lakes_chr %>%
+  mutate(size = as.numeric(size))
+```
+
+Now we have numeric data again if we were to write this object to our global enviornment.
+
+### Creating New Variables
+One way common way we create variables is to recode them into a binary outcome. For instance, we may want to make two mapes - one of lakes that are between 100 acres and 999 acres, and one of lakes that are 1,000 acres or greater. We can identify these features with a logical variable that is `TRUE` if the lake is `1000` acres or greater and `FALSE` otherwise. We use the `ifelse()` function to create an expression we test in a boolean fashion along with what we return if the test is `TRUE` (in this case, `TRUE`), and what we return if the test is `FALSE` (in this case, `FALSE`):
 
 ```{r}
 lakes_large %>%
-  mutate(vlarge = ifelse(size > 999, TRUE, FALSE))
+  mutate(vlarge = ifelse(size >= 1000, TRUE, FALSE)) %>%
+  select(water_body, size, vlarge)
 ```
 
+I've subset the columns afterwards just to illustrate how this looks clearly - you would only want to emulate this if you really only wanted those three variables!
 
-
-
+We can do the same thing, but return characters instead:
 
 ```{r}
 lakes_large %>%
-  mutate(mercury = ifelse(pollutant == "Mercury in Fish Tissue (T)", TRUE, FALSE))
+  mutate(vlarge = ifelse(size >= 1000, "Over 1000 acres", "Under 1000 acres")) %>%
+  select(water_body, size, vlarge)
 ```
+
+In both cases, the expression `size >= 1000` is our boolean test. If the observation is `TRUE` with this test, either `TRUE` or `"Over 1000 acres"` is returned. Likewise, if the observation is `FALSE` with this test, either `FALSE` or `"Under 1000 acres"`.
+
+We can do the same with our test for mercury in fish:
 
 ```{r}
 lakes_large %>%
-  mutate(mercury = ifelse(str_detect(pollutant, pattern = "Mercury"), TRUE, FALSE))
+  mutate(mercury = ifelse(pollutant == "Mercury in Fish Tissue (T)", TRUE, FALSE)) %>%
+  select(water_body, mercury)
 ```
 
+If we have a lot of string data, it can be useful to look for specific words, like "Mercury". We can do this with the `str_detect()` function from `stringr`, which again creates a boolean test to identify whether patterns exist in a given string:
+
 ```{r}
-unique(lakes_large$pollutant)
+lakes_large %>%
+  mutate(mercury = ifelse(str_detect(pollutant, pattern = "Mercury"), TRUE, FALSE)) %>%
+  select(water_body, pollutant, mercury)
 ```
+
+We can make this even more complicated if there are two words we want to search for. For instance, we could look for both "Phosphorus" or "Nitrogen" to be present:
+
+```{r}
+lakes_large %>%
+  mutate(phosNitro = ifelse(str_detect(pollutant, pattern = "Phosphorus|Nitrogen"), TRUE, FALSE)) %>%
+  select(water_body, pollutant, phosNitro)
+```
+
+Just like before, we use the `|` as a logical operator for the word "or". Any time either of these words are found, we return a value of `TRUE`.
+
+Another way to recode variables is to take long strings and shorten them. We'll use `distinct()` to get a list of the pollutants in our data:
+
+```{r}
+lakes_large %>%
+  distinct(pollutant)
+```
+
+If we want to keep all of these data but create shorthand references for them, we can use `case_when()` combined with `mutate()` to specify how each pollutant should be simplified:
 
 ```{r}
 lakes_large %>% 
-  mutate(pollutant_sumple = case_when(
+  mutate(pollutant_simple = case_when(
     pollutant == "Chlorophyll-a (W)" ~ "Chlorophyll",
     pollutant == "Mercury in Fish Tissue (T)" ~ "Mercury",
     pollutant == "Phosphorus, Total (W)" ~ "Phosphorus",
@@ -171,8 +307,23 @@ lakes_large %>%
     ))
 ```
 
+The strings after the tilde (`~`) are what will be returned as new values any time an old value is detected. Notice again how the exactly equal to relational operator (i.e. `==`) is used here!
+
+## Grouping and Summarizing Observations
+Since we have bodies of water in multiple observations, we may want to summarize them. For instance, we could ask how many distinct pollutants are listed per body of water, and whether or not mercury is one of them. The following pipeline groups our data and then summarizes it to answer these two questions.
+
+We:
+
+1. Take the `lakes_large` data, **then**
+2. we create a list of distinct combinations of lake names and pollutants, **then**
+3. create our binary indicator for the presence of mercury, **then**
+4. group our observations by body of water, **then**
+5. create new summary variables that count the number of pollutants per bodyof water and test whether any of the values for `mercury` for each body of water are `TRUE`, **then**
+6. re-order the output in descending order (the role of `desc()`) so the lake with the largest number of pollutants is listed first.
+
 ```{r}
 lakes_large %>%
+  distinct(water_body, pollutant) %>%
   mutate(mercury = ifelse(pollutant == "Mercury in Fish Tissue (T)", TRUE, FALSE)) %>%
   group_by(water_body) %>%
   summarize(
@@ -182,3 +333,9 @@ lakes_large %>%
 ```
 
 
+```{r move-to-docs, include=FALSE}
+# you do need to include this in any notebook you create for this class
+fs::file_copy(here::here("examples", "lecture-07.nb.html"), 
+              here::here("docs", "index.nb.html"), 
+              overwrite = TRUE)
+```
