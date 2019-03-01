@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+<idinfo>
+<citation>
+<citeinfo>
+<origin/>
+<pubdate>20190128</pubdate>
+<title>DAMS</title>
+<geoform>vector digital data</geoform>
+</citeinfo>
+</citation>
+<descript>
+<abstract>This dataset developed by the Missouri Department of Natural Resources. This data set contains the locations of regulated and non-regulated dams in Missouri. 2019 update.</abstract>
+<purpose>One of the missions of the Dam and Reservoir Safety Program is to ensure that dams in the state are constructed, maintained and operated in a safe manner. This is accomplished by regulation of all non-agricultural, non-federal dams 35 feet or more in height and by providing technical assistance and informational resources to all dam owners</purpose>
+<supplinf>The metadata content associated with this data set was reviewed by Elizabeth Retherford on 20190118.  The metadata content review is intended to ensure that all of the required content is present.  The components comprising the metadata document were reviewed by Elizabeth Retherford on 20190118.  The metadata component review is intended to ensure that required metadata components are consistent and understandable to data consumers.</supplinf>
+</descript>
+<timeperd>
+<timeinfo>
+<sngdate>
+<caldate>20190111</caldate>
+</sngdate>
+</timeinfo>
+<current>publication date</current>
+</timeperd>
+<status>
+<progress>In work</progress>
+<update>Continually</update>
+</status>
+<spdom>
+<bounding>
+<westbc>-95.588788</westbc>
+<eastbc>-89.088568</eastbc>
+<northbc>40.603381</northbc>
+<southbc>36.095712</southbc>
+</bounding>
+</spdom>
+<keywords>
+<theme>
+<themekt>None</themekt>
+<themekey>Dams</themekey>
+<themekey>Water</themekey>
+<themekey>Lakes</themekey>
+<themekey>Storage</themekey>
+<themekey>Height</themekey>
+<themekey>Regulated</themekey>
+<themekey>Reservoir Area</themekey>
+<themekey>Hazard</themekey>
+<themekey>Inspection Date</themekey>
+<themekey>Exemption Approved</themekey>
+<themekey>Identification Number</themekey>
+<themekey>Official Name</themekey>
+<themekey>Non - Regulated</themekey>
+<themekey>Owner Type</themekey>
+<themekey>Inland Waters</themekey>
+</theme>
+<theme>
+<themekt>ISO 19115 Topic Categories</themekt>
+<themekey>inlandWaters</themekey>
+</theme>
+<place>
+<placekt>None</placekt>
+<placekey>Missouri</placekey>
+</place>
+</keywords>
+<accconst>None</accconst>
+<useconst>Although all data in this data set have been compiled by the Missouri Department of Natural Resources, no warranty, expressed or implied, is made by the department as to the accuracy of the data and related materials.</useconst>
+<ptcontac>
+<cntinfo>
+<cntorgp>
+<cntorg>Missouri Department of Natural Resources, Missouri Geological Survey, Dam and Reservoir Safety Program</cntorg>
+<cntper>Ryan Stack</cntper>
+</cntorgp>
+<cntpos>Civil Engineer</cntpos>
+<cntaddr>
+<addrtype>mailing</addrtype>
+<address>111 Fairgrounds Road</address>
+<address>P.O. Box 250</address>
+<city>Rolla</city>
+<state>Missouri</state>
+<postal>65401</postal>
+<country>US</country>
+</cntaddr>
+<cntvoice>(573) 368-2178</cntvoice>
+<cnttdd>800-735-2966</cnttdd>
+<cntfax>(573) 368-2175</cntfax>
+<cntemail>ryan.stack@dnr.mo.gov</cntemail>
+<hours>Monday through Friday 8 a.m. to 5 p.m. Central time</hours>
+</cntinfo>
+</ptcontac>
+<datacred>Missouri Department of Natural Resources</datacred>
+<native>ESRI ArcGIS 10.3.1.4959</native>
+</idinfo>
+<dataqual>
+<lineage>
+<procstep>
+<procdesc>The Missouri Dam Safety Status Microsoft Access database is updated and maintained by the Department of Natural Resources (DNR), Missouri Geological Survey (MGS), Dam and Reservoir Safety Program (DRSP).  Data are exported and point features are generated from the latitude and longitude coordinates.</procdesc>
+<procdate>2014</procdate>
+<proccont>
+<cntinfo>
+<cntorgp>
+<cntorg>DNR, MGS, DRSP</cntorg>
+<cntper>Paul Simon</cntper>
+</cntorgp>
+<cntpos>Civil Engineer</cntpos>
+<cntaddr>
+<addrtype>mailing</addrtype>
+<address>111 Fairgrounds Road</address>
+<address>P.O. Box 250</address>
+<city>Rolla</city>
+<state>Missouri</state>
+<postal>65401</postal>
+<country>US</country>
+</cntaddr>
+<cntvoice>(573) 368-2179</cntvoice>
+<cnttdd>800-735-2966</cnttdd>
+<cntfax>(573) 368-2193</cntfax>
+<cntemail>paul.simon@dnr.mo.gov</cntemail>
+<hours>Monday through Friday 8 a.m. to 5 p.m. Central time</hours>
+</cntinfo>
+</proccont>
+</procstep>
+<procstep>
+<procdesc>Two attribute fields (INSPDATE and EX_APPROVED) were removed in this update.  Contact information was also updated.</procdesc>
+<procdate>20180118</procdate>
+<proccont>
+<cntinfo>
+<cntorgp>
+<cntorg>DNR, MGS, DRSP</cntorg>
+<cntper>Jacob Rohter</cntper>
+</cntorgp>
+<cntpos>Technical Assistant</cntpos>
+<cntaddr>
+<addrtype>mailing</addrtype>
+<address>111 Fairgrounds Road</address>
+<address>P.O. Box 250</address>
+<city>Rolla</city>
+<state>Missouri</state>
+<postal>65401</postal>
+<country>US</country>
+</cntaddr>
+<cntvoice>(573) 368-2486</cntvoice>
+<cnttdd>800-735-2966</cnttdd>
+<cntfax>(573) 368-2193</cntfax>
+<cntemail>paul.simon@dnr.mo.gov</cntemail>
+<hours>Monday through Friday 8 a.m. to 5 p.m. Central time</hours>
+</cntinfo>
+</proccont>
+</procstep>
+</lineage>
+</dataqual>
+<spdoinfo>
+<direct>Vector</direct>
+</spdoinfo>
+<eainfo>
+<detailed>
+<enttyp>
+<enttypl>DAMS</enttypl>
+<enttypd>This data set contains the locations of regulated and non-regulated dams in Missouri.</enttypd>
+</enttyp>
+<attr>
+<attrlabl>FID</attrlabl>
+<attrdef>Internal feature number.</attrdef>
+<attrdefs>Esri</attrdefs>
+<attrdomv>
+<udom>Sequential unique whole numbers that are automatically generated.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>Shape</attrlabl>
+<attrdef>Feature geometry.</attrdef>
+<attrdefs>ESRI</attrdefs>
+<attrdomv>
+<udom>Coordinates defining the features.</udom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>SECTNSHPRN</attrlabl>
+<attrdef>The Section, Township, and Range that the dam is located in based on the Public Land Survey System (PLSS).  The source for this data was estimated during the original dam inventory from the early 1980â&#128;&#153;s and has been updated as new dams are added.  The format is S for section followed by a two digit number, T for township followed by a two digit number followed by a N for north, R for range followed by a two digit number followed by an E or W for east or west.  Some dams that are located within a land grant have the same format except the section is replaced by LG for land grand followed by the land grant number and the township and range designations are inferred from nearby sections.</attrdef>
+</attr>
+<attr>
+<attrlabl>ID_NO</attrlabl>
+<attrdef>The official identification (ID) number for the dam. This is a required field and must have an entry for each dam included in the database.  This field is used as the unique identifier for each dam record. The first two characters of the identity are the state two-letter abbreviation, based on the location of the dam. The last five characters of the identity are a unique number (AB#####).  The ID number is the Corps Identification Number assigned to each dam in the 1995-96 National Inventory of Dams (NID) update, under the National Dam Inspection Program (P.L. 92-367). Once assigned, this number should not be changed. However, the following guidelines are provided for assignment of ID numbers for new dams. Each new dam will be assigned an NID ID number by the state or federal coordinator. NID ID numbers will not be reused. If a dam is retired or is otherwise no longer in existence, that ID number is retired. The state coordinator is responsible for assigning ID numbers for all dams, regardless of ownership. The numbers may not necessarily be continuous, because of a previously established scheme, which assigned certain number ranges to federal agencies. Continued use of this numbering scheme for new dams is at the discretion of the state coordinator. Please contact Association of State Dam Safety Officials (ASDSO) or United States Army Corps of Engineers (USACE) Dam Safety Team for further information on the process of assigning NID ID numbers or if an alternative number sequence is necessary to meet the needs of the state.</attrdef>
+</attr>
+<attr>
+<attrlabl>OFFNAME</attrlabl>
+<attrdef>Official name of the dam. No abbreviations used unless a part of the official name. For dams that do not have an official name, the popular name is used.</attrdef>
+<attrdomv>
+<edom>
+<edomv>Blank</edomv>
+<edomvd>Official name has not been assigned.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>REGULATED</attrlabl>
+<attrdef>Code indicating whether the dam is "State Regulated" under the National Dam Safety Program Act.</attrdef>
+<attrdomv>
+<edom>
+<edomv>FALSE</edomv>
+<edomvd>Dam is not regulated by the state.</edomvd>
+</edom>
+<edom>
+<edomv>TRUE</edomv>
+<edomvd>Dam is regulated by the state.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>LATITUDE</attrlabl>
+<attrdef>Approximate latitude of the dam in Decimal Degrees referenced to the North American Datum of 1983.</attrdef>
+</attr>
+<attr>
+<attrlabl>LONGITUDE</attrlabl>
+<attrdef>Approximate longitude of the dam in Decimal Degrees referenced to the North American Datum of 1983.</attrdef>
+</attr>
+<attr>
+<attrlabl>COUNTY</attrlabl>
+<attrdef>Name of the county in which the dam is located.</attrdef>
+</attr>
+<attr>
+<attrlabl>OWNTYPE</attrlabl>
+<attrdef>Code indicating owner type.</attrdef>
+<attrdomv>
+<edom>
+<edomv>F</edomv>
+<edomvd>Federal</edomvd>
+</edom>
+<edom>
+<edomv>S</edomv>
+<edomvd>State</edomvd>
+</edom>
+<edom>
+<edomv>L</edomv>
+<edomvd>Local government</edomvd>
+</edom>
+<edom>
+<edomv>U</edomv>
+<edomvd>Public utility</edomvd>
+</edom>
+<edom>
+<edomv>P</edomv>
+<edomvd>Private</edomvd>
+</edom>
+<edom>
+<edomv>Blank</edomv>
+<edomvd>Blank if not available.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>DAMTYPE</attrlabl>
+<attrdef>Code(s), in order of importance, indicating the type(s) of dam.</attrdef>
+<attrdomv>
+<edom>
+<edomv>RE</edomv>
+<edomvd>Earth</edomvd>
+</edom>
+<edom>
+<edomv>ER</edomv>
+<edomvd>Rock fill</edomvd>
+</edom>
+<edom>
+<edomv>PG</edomv>
+<edomvd>Gravity</edomvd>
+</edom>
+<edom>
+<edomv>CB</edomv>
+<edomvd>Buttress</edomvd>
+</edom>
+<edom>
+<edomv>VA</edomv>
+<edomvd>Arch</edomvd>
+</edom>
+<edom>
+<edomv>MV</edomv>
+<edomvd>Multi-arch</edomvd>
+</edom>
+<edom>
+<edomv>RC</edomv>
+<edomvd>Roller-compacted concrete</edomvd>
+</edom>
+<edom>
+<edomv>CN</edomv>
+<edomvd>Concrete</edomvd>
+</edom>
+<edom>
+<edomv>MS</edomv>
+<edomvd>Masonry</edomvd>
+</edom>
+<edom>
+<edomv>ST</edomv>
+<edomvd>Stone</edomvd>
+</edom>
+<edom>
+<edomv>TC</edomv>
+<edomvd>Timber crib</edomvd>
+</edom>
+<edom>
+<edomv>OT</edomv>
+<edomvd>Other</edomvd>
+</edom>
+<edom>
+<edomv>blank</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>PURPOSE</attrlabl>
+<attrdef>Code(s), in order of importance, indicating the current purpose(s) for which the reservoir is used.</attrdef>
+<attrdomv>
+<edom>
+<edomv>I</edomv>
+<edomvd>Irrigation</edomvd>
+</edom>
+<edom>
+<edomv>H</edomv>
+<edomvd>Hydroelectric</edomvd>
+</edom>
+<edom>
+<edomv>C</edomv>
+<edomvd>Flood control and storm water management</edomvd>
+</edom>
+<edom>
+<edomv>N</edomv>
+<edomvd>Navigation</edomvd>
+</edom>
+<edom>
+<edomv>S</edomv>
+<edomvd>Water supply</edomvd>
+</edom>
+<edom>
+<edomv>R</edomv>
+<edomvd>Recreation</edomvd>
+</edom>
+<edom>
+<edomv>P</edomv>
+<edomvd>Fire protection, stock, or small farm pond</edomvd>
+</edom>
+<edom>
+<edomv>F</edomv>
+<edomvd>Fish and wildlife pond</edomvd>
+</edom>
+<edom>
+<edomv>D</edomv>
+<edomvd>Debris control</edomvd>
+</edom>
+<edom>
+<edomv>T</edomv>
+<edomvd>Tailings</edomvd>
+</edom>
+<edom>
+<edomv>G</edomv>
+<edomvd>Grade stabilization</edomvd>
+</edom>
+<edom>
+<edomv>O</edomv>
+<edomvd>Other</edomvd>
+</edom>
+<edom>
+<edomv>blank</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>YRCMPLT</attrlabl>
+<attrdef>Four-digit year that the original main dam structure was constructed.  The source for this data was estimated during the original dam inventory from the early 1980â&#128;&#153;s and has been updated as new dams are added.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>LENGTH</attrlabl>
+<attrdef>Length of the dam, in feet, which is defined as the length along the top of the dam.  This also includes the spillway, power plant, navigation lock, fish pass, etc., where these form part of the length of the dam.  If detached from the dam, these structures should not be included.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>DAMHT</attrlabl>
+<attrdef>Height of the dam, in feet to the nearest tenth of a foot, which is defined as the vertical distance between the lowest point on the crest of the dam and the lowest point in the original streambed.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>Dam is either breached, inundated, or some other scenario.  The lake is filled in for dam numbers MO12384 and MO12385.  Number MO31036 is inundated by tailings.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>MAXSTOR</attrlabl>
+<attrdef>Maximum storage, in acre-feet, which is defined as the total storage space in a reservoir below the maximum attainable water surface elevation, including any surcharge storage.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>Dam is either breached or inundated.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>RESAREA</attrlabl>
+<attrdef>Surface area, in acres, of the impoundment at its normal retention level.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>Dam is either breached or inundated.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>WTRSHED</attrlabl>
+<attrdef>Drainage area of the dam, in acres, which is defined as the area that drains to a particular point (in this case, the dam) on a river or stream.</attrdef>
+<attrdomv>
+<edom>
+<edomv>0</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>HAZARD</attrlabl>
+<attrdef>Code indicating the potential hazard to the downstream area resulting from failure or improper operation of the dam or facilities.</attrdef>
+<attrdomv>
+<edom>
+<edomv>L</edomv>
+<edomvd>LOW HAZARD POTENTIAL:  Dams assigned the low hazard potential classification are any that have not been assigned a SIGNIFICANT or HIGH hazard potential.</edomvd>
+<edomvds>Interagency Committee on Dam Safety</edomvds>
+</edom>
+<edom>
+<edomv>S</edomv>
+<edomvd>SIGNIFICANT HAZARD POTENTIAL:  Dams assigned the significant hazard potential classification are defined as, no loss of human life expected if the dam were to fail, but significant economic losses or substantial damage to public services or infrastructure are probable or expected if the dam were to fail.</edomvd>
+<edomvds>Interagency Committee on Dam Safety</edomvds>
+</edom>
+<edom>
+<edomv>H</edomv>
+<edomvd>HIGH HAZARD POTENTIAL:  Dams assigned the high hazard potential classification are defined as, loss of human life is probable or expected if the dam were to fail.</edomvd>
+<edomvds>Interagency Committee on Dam Safety</edomvds>
+</edom>
+<edom>
+<edomv>Blank</edomv>
+<edomvd>Hazard class has not been established.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>EMERACT</attrlabl>
+<attrdef>Code indicating whether the dam has an Emergency Action Plan (EAP) developed by the dam owner.  An EAP is defined as a plan of action to be taken to reduce the potential for property damage and loss of life in an area affected by a dam failure or large flood.  If an EAP is required (or not required) and has one, it will be listed Y for yes.  If an EAP is required and does not have one, it will be listed N for No.  If there is not an EAP and one is not required, it will be listed NR for Not Required.</attrdef>
+<attrdomv>
+<edom>
+<edomv>Y</edomv>
+<edomvd>Yes</edomvd>
+</edom>
+<edom>
+<edomv>N</edomv>
+<edomvd>No</edomvd>
+</edom>
+<edom>
+<edomv>NR</edomv>
+<edomvd>Not required</edomvd>
+</edom>
+<edom>
+<edomv>blank</edomv>
+<edomvd>No data available</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>NHAZARD</attrlabl>
+<attrdef>Code indicating the environmental hazard class of the dam.  The downstream environment zone is the area downstream from the dam that would be affected by inundation in the event the dam failed.  Inundation is defined as water, two feet or more deep over the general level of the submerged ground affected outside the stream channel.  Based on the content of the downstream environment zone, three environmental classes are defined.  They are: class 1, which contains ten or more permanent dwellings or any public building; class 2, which contains one to nine permanent dwellings, or one or more campgrounds with permanent water, sewer and electrical services or one or more industrial buildings; and class 3, which is everything else.</attrdef>
+<attrdomv>
+<edom>
+<edomv>1</edomv>
+<edomvd>Class 1: A dam assigned the class 1 environmental classification is a dam that has ten or more permanent dwellings or any public building in the environmental zone downstream of the dam.</edomvd>
+</edom>
+<edom>
+<edomv>2</edomv>
+<edomvd>Class 2: A dam assigned the class 2 environmental classification is a dam that has one to nine permanent dwellings, or one or more campgrounds with permanent water, sewer and electrical services or one or more industrial buildings in the environmental zone downstream of the dam.</edomvd>
+</edom>
+<edom>
+<edomv>3</edomv>
+<edomvd>Class 3: A dam assigned the class 3 environmental classification is a dam that does not fall under the class 1 or class 2 definition.</edomvd>
+</edom>
+<edom>
+<edomv>blank</edomv>
+<edomvd>Hazard class has not been assigned.</edomvd>
+</edom>
+</attrdomv>
+</attr>
+<attr>
+<attrlabl>QUAD</attrlabl>
+<attrdef>The name of the U.S. Geological Survey 7.5 minute topographic map that the dam is located in.  The source for this data was estimated during the original dam inventory from the early 1980â&#128;&#153;s and has been updated as new dams are added.</attrdef>
+<attrdomv>
+<edom>
+<edomv>blank</edomv>
+<edomvd>Not determined</edomvd>
+</edom>
+</attrdomv>
+</attr>
+</detailed>
+</eainfo>
+<metainfo>
+<metd>20190225</metd>
+<metc>
+<cntinfo>
+<cntorgp>
+<cntorg>DNR, MGS, DRSP</cntorg>
+<cntper>Jacob Rohter</cntper>
+</cntorgp>
+<cntpos>Technical Assistant</cntpos>
+<cntaddr>
+<addrtype>mailing and physical</addrtype>
+<address>P.O. Box 250</address>
+<address>111 Fairgrounds Rd</address>
+<city>Rolla</city>
+<state>Missouri</state>
+<postal>65402</postal>
+<country>US</country>
+</cntaddr>
+<cntvoice>(573) 368-2486</cntvoice>
+<cnttdd>800-735-2966</cnttdd>
+<cntfax>(573) 368-2193</cntfax>
+<cntemail>jacob.rohter@dnr.mo.gov</cntemail>
+<hours>Monday through Friday 8 a.m. to 5 p.m. Central time</hours>
+</cntinfo>
+</metc>
+<metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+<metstdv>FGDC-STD-001-1998</metstdv>
+<mettc>local time</mettc>
+</metainfo>
+</metadata>

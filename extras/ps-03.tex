@@ -1,0 +1,145 @@
+\documentclass{tufte-handout}
+
+\usepackage{xcolor}
+
+% set image attributes:
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+% set hyperlink attributes
+\hypersetup{colorlinks}
+
+\usepackage{fancyvrb,xcolor}
+
+\definecolor{cverbbg}{gray}{0.93}
+
+\newenvironment{codeBlock}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\dimexpr\linewidth-2\fboxsep][l]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
+% set list attributes:
+\usepackage{enumerate}
+\usepackage{enumitem}
+
+% ============================================================
+
+% define the title
+\title{SOC 4650/5650: PS-03 - Dangerous Dams in \\Missouri}
+\author{Christopher Prener, Ph.D.}
+\date{Spring 2019}
+% ============================================================
+\begin{document}
+% ============================================================
+\maketitle % generates the title
+% ============================================================
+
+\vspace{5mm}
+\section{Directions}
+Using data from the \texttt{MO\_HYDRO\_Dams.csv} data, create a well-formatted R Markdown document that cleans a data set of all Missouri dams in the U.S. Army Corps of Engineers' National Inventory of Dams. Your entire project folder system, including notebook output and results, should be uploaded to GitHub by Monday, March 11\textsuperscript{th} at 4:15pm.
+
+\vspace{5mm}
+\section{Analysis Development}
+The goal of this section is to create a self contained project directory with all of the data, code, map documents, results, and documentation a project needs.
+
+\begin{enumerate}[label=\alph*.]
+\item \textbf{Clone} the \texttt{lecture-06} repository if you have not already done so.
+\item Create a project folder system with all of the necessary components, and drag the lab data from \texttt{lecture-07/data/lab-06/} into your RStudio Project's \texttt{data/} subdirectory.
+\item Create a \texttt{README.md} text file (\textsf{File $\triangleright$} {\color{red}\textsf{New File}} \textsf{$\triangleright$ Text File}). Add a quick description of your project and outline the key directories and files that are included. 
+\item Create a well-formatted RMarkdown document for your data cleaning efforts.
+\item Load the \texttt{.shp} file containing the dam data as well as the extra data for ground layers (the state boundary and major rivers).
+\item Re-project each layer using the same CRS code (modifying your object names as needed):
+\begin{codeBlock}
+data <- st_transform(data, crs = 32615)
+\end{codeBlock}
+\end{enumerate}
+
+\newpage
+\section{Part 1: Cleaning the Dam Data}
+This initial section is focused on cleaning the data on dams prior to mapping.
+
+\begin{enumerate}
+\item Begin by creating a pipeline that:
+\begin{enumerate}
+\item Renames variables to en masse,\sidenote{The following instructions assume you used \texttt{`"lower\_camel"`}, so some adaptation may be required.}
+\item then renames the variable \texttt{fid} to \texttt{id},
+\item then renames the variable \texttt{offname} (dam name),
+\item then renames the variable \texttt{owntype} (owner type),
+\item then renames the variable \texttt{damtype} (dam type),
+\item then renames the variable \texttt{damht} (height in feet),
+\item then renames the variable \texttt{nhazard} (hazard rating),
+\item and assigns these changes back into the existing tibble.
+\end{enumerate}
+\item Create a report of missing data across variables - do any variables have missing data?
+\item Create a report of missing data across observations - do any variables have missing data?
+\item Create and evaluate a duplicate observation report for the entire data frame. 
+\item Check to see if there are duplicates in the \texttt{id} variable, which appears like it may uniquely identify observations. Is this the case?
+\item Check to see if there are duplicates in the \texttt{idNo} variable, which appears like it may uniquely identify observations. This variable is the National Inventory of Dams Identification Number. Is this the case?
+\item Based on your answer to the last two questions, which variable is best to use if we want to uniquely identify observations?
+\item In a pipeline, make the following two changes:
+\begin{enumerate}
+\item Create a subset of observations where the dam hazard rating is 1 (the highest danger), 
+\item then retain only the following variables that were listed under question 2,
+\item and assign these changes to a new tibble.
+\end{enumerate}
+\item In a pipeline, edit the following variables in your high dams subset to create a new measure and edit an existing one:
+\begin{enumerate}
+\item Edit the \texttt{ownType} variable's values so that they are more descriptive.\sidenote{\textit{Hint:} Make sure you wrap your values in \textit{double quotes}. You will need either five instances of the \texttt{mutate()} function combined with \texttt{ifelse()} \textbf{or} one instance of the \texttt{mutate()} function combined with \texttt{case\_when()}.} The following definitions apply:
+\begin{verbatim}
+F = Federal
+L = Local Government
+P = Private
+S = State
+U = Public Utility
+\end{verbatim}
+\item Then make a variable that is \texttt{TRUE} if the dam type is \texttt{RE} (an earthen dam), and \texttt{FALSE} otherwise.\sidenote{\textit{Hint:} Make sure you wrap your values in \textit{double quotes}.}
+\item Finally, assign these changes back into the existing tibble containing the high dams subset.
+\end{enumerate}
+\end{enumerate}
+
+\vspace{5mm}
+\section{Part 2: Mapping the Dam Data}
+Create a map of dams in Missouri colored by their height. Use the state boundary and major rivers as ground layers to provide additional context. You should include the other map layout elements necessary, and the map should be exported to your \texttt{results/} folder as a \texttt{.pdf} at \texttt{500} dots per inch. Feel free to use either \texttt{ggplot2} or \texttt{tmap} for mapping. This will require a modification or two to your mapping approach:
+\begin{itemize}
+\item \texttt{ggplot2}:
+\begin{itemize}
+\item use \texttt{mapping = aes(color = \textit{variable})} in your \texttt{geom\_sf} call to shade your points by a particular value instead of the \texttt{fill} argument we've used previously
+\item use \texttt{scale\_color\_viridis()} or \texttt{scale\_color\_distiller()} instead of the \texttt{scale\_fill...} functions we've used previously; these are used with the same arguments you used with the \texttt{scale\_fill...} functions
+\end{itemize}
+\item \texttt{tmap}:
+\begin{itemize}
+\item use \texttt{tm\_symbols()} instead of the \texttt{tm\_polygons()} function we've used previously; \texttt{tm\_symbols()} can be used with the same arguments you used with \texttt{tm\_polygons()}
+\end{itemize}
+\end{itemize}
+
+\newpage
+\section{Part 3: Small Multiples of Owner Type}
+Once we have our overall map, we'll also want to create an additional map that breaks out your data using the new variable owner type variable you created. The map should be exported to your \texttt{results/} folder as a \texttt{.pdf} at \texttt{500} dots per inch. Feel free to use either \texttt{ggplot2} or \texttt{tmap} for mapping. Use the same code you used in Part 2 to create your map, but add:
+\begin{itemize}
+\item \texttt{ggplot2}:
+\begin{itemize}
+\item add \texttt{facet\_wrap(\textasciitilde\textit{variable})} as another step to your \texttt{ggplot()} call and be sure to include a plus sign
+\end{itemize}
+\item \texttt{tmap}:
+\begin{itemize}
+\item add \texttt{tm\_facets(by = \textit{variable})} as another step to your \texttt{tmap} call and be sure to include a plus sign
+\end{itemize}
+\end{itemize}
+
+\vspace{5mm}
+\section{Part 4: Small Multiples of Dam Type}
+We also want to create an additional map that breaks out your data using the new variable you created that is \texttt{TRUE} if the dam is an earthen one and \texttt{FALSE} otherwise. Before you begin mapping, use the following sample code (modified to match your object and variable names) to drop missing observations from your data:
+
+\begin{codeBlock}
+data <- filter(data, is.na(earthen) == FALSE)
+\end{codeBlock}
+
+\par \noindent Use the state boundary and major rivers as ground layers to provide additional context. The map should be exported to your \texttt{results/} folder as a \texttt{.pdf} at \texttt{500} dots per inch. Feel free to use either \texttt{ggplot2} or \texttt{tmap} for mapping, and use the same faceting approach you used in Part 3 (i.e. start with your map from Part 2 and add the appropriate faceting function).
+
+% ============================================================
+\end{document}
