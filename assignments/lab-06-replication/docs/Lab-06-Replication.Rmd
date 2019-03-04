@@ -1,0 +1,99 @@
+---
+title: "Lab-06-Replication"
+author: "Branson Fox"
+date: '(`r format(Sys.time(), "%B %d, %Y")`)'
+output: 
+  github_document: default
+  html_notebook: default 
+---
+
+## Introduction
+This notebook replicates the results of lab 06.
+
+## Dependencies
+This notebook requires the following packages to load our data and clean it.
+
+```{r load-packages}
+# tidyverse packages
+library(readr)   # reading tabular data
+library(dplyr)   # data wrangling
+# other packages
+library(here)    # file path management
+library(janitor) # data wrangling
+library(naniar)  # missing data analysis
+```
+
+## Load Data
+This notebook requires the `MO_HYDRO_ImpairedRiversStreams.csv` data from the lecture-07 repository.
+
+```{r load-data}
+rivers <- read_csv(here("data", "MO_HYDRO_ImpairedRiversStreams.csv"))
+```
+
+## Part 1: Data Wrangling
+### Question 1
+We'll start by creating a pipeline using the pipe operator `%>%` that renames variables to `snake_case`, and rename two other variables.
+
+```{r p1-q1}
+rivers %>% 
+  clean_names(case = "snake") %>%
+  rename(
+    date = eventdat,
+    county = county_u_d) -> rivers_names
+# print tibble
+rivers_names
+```
+
+### Question 2
+Next, we'll create a missing variable summary using the `miss_var_summary()` function from `naniar`.
+```{r p1-q2}
+miss_var_summary(rivers_names)
+```
+We can observe that `rchsmdate`, `rch_res` and `feat_url` are missing for all observations, and `perm_id`,`date` and `ou` are missing a small percentage of observations.
+
+### Question 3
+Next, we'll create a report of duplicate observations. We'll do so by using the `get_dupes()` function from `janitor`.
+```{r p1-q3}
+get_dupes(rivers_names)
+```
+There are 36 observations in which data is duplicated twice. Or in other words, 18 observations are duplicates. If we have 6029 observations and 18 are duplicate, we only have 6011 *unique* observations.
+
+### Question 4
+Next, we'll check for duplicates in the `perm_id` variable
+```{r p1-q4}
+get_dupes(rivers_names, perm_id)
+```
+It appears that there is a substantial number of observations (2349) in which `perm_id` is duplicated. Therefore, this variable does not uniquely identify variables.
+
+### Question 5
+Next, we'll create a pipeline that subsets observations to St. Louis, keeps only variables we are interested in, and assigns these changes to a new tibble.
+```{r p1-q5}
+rivers_names %>%
+  filter(county == "St. Louis") %>%
+  select(yr, wbid, water_body, pollutant, source) -> rivers_stl
+# print tibble
+rivers_stl
+```
+
+### Question 6
+Finally, we'll create a pipeline that changes the word `Creek` to `Cr.`, creates a logical `ecoli` variable and assigns the new data back into the original tibble.
+```{r p1-q6}
+rivers_stl %>%
+  mutate(water_body = case_when(
+    water_body == "Gravois Creek tributary" ~ "Gravois Cr. tributary",
+    water_body == "Twomile Creek" ~ "Twomile Cr.",
+    water_body == "Watkins Creek tributary" ~ "Watkins Cr. tributary",
+    TRUE ~ water_body
+  ),
+  ecoli = ifelse(pollutant == "Escherichia coli (W)",TRUE,FALSE)
+  ) -> rivers_stl
+# print tibble
+rivers_stl
+```
+
+
+
+
+
+
+
